@@ -70,6 +70,13 @@ namespace StarterAssets
 		[Tooltip("Weapon that will be equiped at the start")]
 		public Gun startingWeapon;
 
+		[Header("Interaction")] 
+		[Tooltip("Players interaction controller")]
+		public PlayerInteraction interaction;
+
+		[Tooltip("Player is Dead")]
+		public bool isDead = false;
+
 		// cinemachine
 		private float _cinemachineTargetPitch;
 
@@ -145,8 +152,14 @@ namespace StarterAssets
 		
 		private void Update()
 		{
+			if(isDead)
+				return;
+			
 			JumpAndGravity();
 			GroundedCheck();
+
+			if (interaction.isInteracting)
+				return;
 			Move();
 			Fire();
 			DropWeapon();
@@ -248,7 +261,7 @@ namespace StarterAssets
 				_input.fire = false;
 			}
 		}
-		
+
 		private void DropWeapon()
 		{
 			if (_input.drop)
@@ -265,9 +278,9 @@ namespace StarterAssets
 		
 		private void Use()
 		{
-			if (_input.use)
+			if (interaction && _input.use)
 			{
-				// Use Stub
+				interaction.Interact();
 				_input.use = false;
 			}
 		}
@@ -346,7 +359,7 @@ namespace StarterAssets
 			
 			if (!other.CompareTag("Gun"))
 				return;
-        
+
 			// Else
 			var gun = other.transform.GetComponent<Gun>();
 			if (gun) EquipedWeapon = gun.PickUp(WeaponLocation);
@@ -361,17 +374,23 @@ namespace StarterAssets
 			
 				if (hp <= 0)
 				{
-					// Death
-					CinemachineCameraTarget.GetComponent<Rigidbody>().isKinematic = false;
-					CinemachineCameraTarget.GetComponent<Collider>().enabled = true;
-					EquipedWeapon.Drop();
-					_game.mainCamera.SwitchToDeathCamera();
-					tag = "Untagged";
-					GameManager.Instance.CurrentState = GameManager.GameStates.LOST;
-					enabled = false;
-					Debug.Log("Enabled = " + enabled);
+					Die();
 				}
 			}
+		}
+
+		public void Die()
+		{
+			isDead = true;
+			// Death
+			CinemachineCameraTarget.GetComponent<Rigidbody>().isKinematic = false;
+			CinemachineCameraTarget.GetComponent<Collider>().enabled = true;
+			EquipedWeapon.Drop();
+			_game.mainCamera.SwitchToDeathCamera();
+			tag = "Untagged";
+			GameManager.Instance.CurrentState = GameManager.GameStates.LOST;
+			enabled = false;
+			Debug.Log("Enabled = " + enabled);
 		}
 	}
 }

@@ -1368,6 +1368,7 @@ GameObject:
   - component: {fileID: 3397470547521504455}
   - component: {fileID: 3397470547521504454}
   - component: {fileID: 3397470547521504473}
+  - component: {fileID: 2219498502305183869}
   m_Layer: 8
   m_Name: DefaultEnemy
   m_TagString: Invulnerable
@@ -1382,7 +1383,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3396436222175455660}
-  m_LocalRotation: {x: -0, y: 0.97738284, z: -0, w: 0.21147773}
+  m_LocalRotation: {x: 0, y: 0.9773827, z: 0, w: 0.21147837}
   m_LocalPosition: {x: -17.25, y: -0.062, z: 3.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1504,6 +1505,7 @@ MonoBehaviour:
   ragdoll: {fileID: 3397470547521504473}
   droppedWeapon: {fileID: 1968948285289728366, guid: 2db3eaa2deb5543cfb9cc823be197292,
     type: 3}
+  isImmune: 0
   _hp: 1
 --- !u!114 &3397470547521504473
 MonoBehaviour:
@@ -1529,6 +1531,36 @@ MonoBehaviour:
   - {fileID: 3397470546662648596}
   - {fileID: 3397470547202787446}
   - {fileID: 3397470546372731503}
+--- !u!114 &2219498502305183869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3396436222175455660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0145641d4f06a484898db8cf48dbe9a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactor: {fileID: 0}
+  _interactionMessage: Riposte
+  interaction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2219498502305183869}
+        m_TargetAssemblyTypeName: Ripostable, Assembly-CSharp
+        m_MethodName: Riposte
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _enemyScript: {fileID: 3397470547521504454}
 --- !u!1 &3396437383327484202
 GameObject:
   m_ObjectHideFlags: 0
@@ -3405,6 +3437,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3398225609267970098}
     m_Modifications:
+    - target: {fileID: 3397470547730420236, guid: 1a988b3872ca14a08b73aff49691bb55,
+        type: 3}
+      propertyPath: damage
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5397161703746684894, guid: 1a988b3872ca14a08b73aff49691bb55,
         type: 3}
       propertyPath: m_RootOrder

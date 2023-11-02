@@ -1,4 +1,5 @@
 using System;
+using StarterAssets;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -6,6 +7,7 @@ public class Enemy : MonoBehaviour
     public Transform aimPoint;
     public Ragdoll ragdoll;
     public GameObject droppedWeapon;
+    public bool isImmune = false;
     
     [SerializeField] private int _hp = 1;
     private Camera _camera;
@@ -14,6 +16,7 @@ public class Enemy : MonoBehaviour
     private Renderer _renderer;
     private bool _inCamera = false;
     private bool _isVisible;
+    
     private void OnBecameVisible()
     {
         Debug.Log("Visible:" + _isVisible);
@@ -77,23 +80,31 @@ public class Enemy : MonoBehaviour
 
     public void Damage(int amount)
     {
+        if(isImmune)
+            return;
+        
         _hp -= amount;
         if (_hp <= 0)
         {
-            GetComponent<Collider>().enabled = false;
-            GetComponent<EnemyAI>().gun.gameObject.SetActive(false);
-            GetComponent<EnemyAI>().enabled = false;
-            GetComponent<Animator>().enabled = false;
-            
-            // Death operations
-            ragdoll.isEnabled = true;
-            var drop = Instantiate(droppedWeapon);
-            drop.transform.position = transform.position + transform.up * 2 + transform.forward * 2;
-            drop.transform.rotation = transform.rotation;
-            drop.GetComponent<Gun>().Drop();
-            
-            AimController.Instance.RemoveEnemy(this);
-            enabled = false;
+            Die();
         }
+    }
+    
+    public void Die()
+    {
+        GetComponent<Collider>().enabled = false;
+        GetComponent<EnemyAI>().gun.gameObject.SetActive(false);
+        GetComponent<EnemyAI>().enabled = false;
+        GetComponent<Animator>().enabled = false;
+            
+        // Death operations
+        ragdoll.isEnabled = true;
+        var drop = Instantiate(droppedWeapon);
+        drop.transform.position = transform.position + transform.up * 2 + transform.forward * 2;
+        drop.transform.rotation = transform.rotation;
+        drop.GetComponent<Gun>().Drop();
+
+        AimController.Instance.RemoveEnemy(this);
+        enabled = false;
     }
 }

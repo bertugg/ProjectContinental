@@ -7,6 +7,8 @@ TagManager:
   - CinemachineTarget
   - Invulnerable
   - Gun
+  - MeleeArea
+  - Usable
   layers:
   - Default
   - TransparentFX
@@ -19,8 +21,8 @@ TagManager:
   - Character
   - Ground
   - Postprocess
-  - 
-  - 
+  - MeleeArea
+  - Usable
   - 
   - 
   - 
